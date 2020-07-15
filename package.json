@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/YXL76/node-rs-player/issues"
   },
-  "homepage": "https://github.com/YXL76/node-rs-player#readme"
+  "homepage": "https://github.com/YXL76/node-rs-player#readme",
+  "dependencies": {
+    "ws": "^7.3.1"
+  }
 }
