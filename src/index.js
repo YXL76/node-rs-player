@@ -23,12 +23,14 @@ class RsPlayer extends EventEmitter {
     this.timer = setInterval(async () => {
       if (this.playing) {
         const pos = await this.state();
-        if (pos.empty) {
-          this.emit('playback', pos.position);
-        } else {
-          this.playing = false;
-          this.emit('end');
-        }
+        if (pos.playing) {
+          if (pos.empty) {
+            this.emit('playback', pos.position);
+          } else {
+            this.playing = false;
+            this.emit('end');
+          }
+        } else this.playing = false;
       }
     }, this.interval * 1000);
   }
