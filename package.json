@@ -1,7 +1,11 @@
 {
   "name": "rs-player",
   "version": "1.0.0",
-  "description": "",
+  "description": "client for rs-player",
+  "keywords": [
+    "audio",
+    "rs-player"
+  ],
   "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
