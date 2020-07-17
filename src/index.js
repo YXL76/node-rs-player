@@ -14,7 +14,7 @@ class RsPlayer extends EventEmitter {
     this.path = path;
     this.port = port || 19260;
     this.interval = interval || 1;
-    this.args = [`--port=${this.port}`, ...args];
+    this.args = [`--port=${this.port}`, ...(args || [])];
   }
 
   launch() {
