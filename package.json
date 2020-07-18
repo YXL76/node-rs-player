@@ -20,7 +20,9 @@
     "url": "https://github.com/YXL76/node-rs-player/issues"
   },
   "homepage": "https://github.com/YXL76/node-rs-player#readme",
-  "dependencies": {},
+  "dependencies": {
+    "execa": "^4.0.3"
+  },
   "devDependencies": {
     "eslint": "^7.4.0",
     "eslint-config-airbnb-base": "^14.2.0",
