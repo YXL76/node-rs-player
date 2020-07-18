@@ -2,7 +2,7 @@
 const http = require('http');
 const { chmodSync } = require('fs');
 const EventEmitter = require('events');
-const { spawn } = require('child_process');
+const execa = require('execa');
 
 class RsPlayer extends EventEmitter {
   constructor(options) {
@@ -14,33 +14,35 @@ class RsPlayer extends EventEmitter {
     } = options;
     this.path = path;
     this.port = port || 19260;
-    this.interval = interval || 1;
+    this.interval = interval === undefined ? 1 : interval;
     this.args = [`--port=${this.port}`, ...(args || [])];
   }
 
   launch() {
     try { chmodSync(this.path, 0o755); } catch {}
-    this.player = spawn(this.path, this.args);
+    this.player = execa(this.path, this.args, { buffer: false, stdio: ['ignore', 'ignore', 'ignore'] });
 
-    this.timer = setInterval(async () => {
-      if (this.playing) {
-        const pos = await this.state();
-        if (pos.playing) {
-          if (pos.empty) {
-            this.emit('playback', pos.position);
-          } else {
-            this.playing = false;
-            this.emit('end');
-          }
-        } else this.playing = false;
-      }
-    }, this.interval * 1000);
+    if (this.interval > 0) {
+      this.timer = setInterval(async () => {
+        if (this.playing) {
+          const pos = await this.state();
+          if (pos.playing) {
+            if (pos.empty) {
+              this.emit('playback', pos.position);
+            } else {
+              this.playing = false;
+              this.emit('end');
+            }
+          } else this.playing = false;
+        }
+      }, this.interval * 1000);
+    }
   }
 
   quit() {
-    this.player.kill('SIGHUP');
-    this.playing = false;
     clearInterval(this.timer);
+    this.playing = false;
+    this.player.cancel();
   }
 
   request(path) {
