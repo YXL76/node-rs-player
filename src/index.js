@@ -7,7 +7,7 @@ class RsPlayer extends EventEmitter {
   constructor(options) {
     super();
     this.playing = false;
-    this.agent = http.Agent({ keepAlive: true });
+    this.agent = http.Agent({ keepAlive: true, keepAliveMsecs: 1200 });
     const {
       path, args, port, interval,
     } = options;
