@@ -1,5 +1,6 @@
 /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
 const http = require('http');
+const { chmodSync } = require('fs');
 const EventEmitter = require('events');
 const { spawn } = require('child_process');
 
@@ -18,6 +19,7 @@ class RsPlayer extends EventEmitter {
   }
 
   launch() {
+    try { chmodSync(this.path, 0o755); } catch {}
     this.player = spawn(this.path, this.args);
 
     this.timer = setInterval(async () => {
